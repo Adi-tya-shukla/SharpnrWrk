@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Appointment</title>
+    <style>
+        div {
+            opacity: 0.9;
+            width: 600px;
+            height: 540px;
+             margin-top : 90px;
+             border: 2px groove; 
+}
+        body
+        {
+            background-image: url("premium_photo-1674674741336-a56fe644eb84.avif");
+        }
+    
+        input[type=text], select {
+          width: 90%;
+         padding: 8px 12px;
+         margin: 7px 0;
+         display: inline-block;
+         border: 1px solid #ccc;
+          border-radius: 4px;
+         box-sizing: border-box;
+          }
+          input[type=email], select {
+            width: 90%;
+         padding: 8px 12px;
+         margin: 7px 0;
+         display: inline-block;
+         border: 1px solid #ccc;
+          border-radius: 4px;
+         box-sizing: border-box;
+          }
+          input[type=tel], select {
+            width: 90%;
+         padding: 8px 12px;
+         margin: 7px 0;
+         display: inline-block;
+         border: 1px solid #ccc;
+          border-radius: 4px;
+         box-sizing: border-box;
+          } 
+          input[type=datetime-local], select {
+         
+            width: 90%;
+         padding: 8px 12px;
+         margin: 7px 0;
+         display: inline-block;
+         border: 1px solid #ccc;
+          border-radius: 4px;
+         box-sizing: border-box;
+          }
+
+           input[type=submit] {
+          width: 90%;
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+        margin: 8px 0;
+           border: none;
+         border-radius: 4px;
+          cursor: pointer;
+      }
+    
+        h1
+        {
+            font-family:serif;
+            font-size: xx-large;
+            color: rgba(28, 93, 184, 0.761);
+        }
+        h4{
+          margin-top: 5px;
+            color: rgba(141, 9, 115, 0.964);
+        }
+        #list{
+          background: #ebe5e5;
+          height:auto;
+        }
+      
+       
+    </style>
+</head>
+
+
+<body>
+    <form onsubmit="register(event)">
+        <center><div class="container">
+        <h1><b>Book Your Appointment Now &#9997;</b></h1>
+        <marquee><h4><u><i>fill out the below details and give us your suitable time</i></u></h4></marquee>
+        <hr>
+        <label for="name"  class="form-label">&#128590; Name:</label><br>
+        <input type="text" id="name" name="name"  placeholder="Enter your name" size="30"  class="form-control"   ><br>
+        <label for="email">&#9993; Enter your email :</label><br>
+        <input type="email" id="email" name="email" placeholder="Valid mail id"required><br>
+        <label for="phone">&#128222; Contact:</label><br>
+        <input type="tel" id="phone" name="phone" pattern="[0-9]{10}"required><br>
+        <label for="t&d">&#128198; Time for Call:</label><br>
+      
+        <input type="datetime-local" id="time" name="t&d"><br>
+        <br>
+        <input type="submit" value="Confirm Booking &#10004;" size="60" >
+    </div>
+  
+</center>
+<div id="list">
+  <ul id="users">
+  
+</ul>
+</div>
+      </form>
+      <script>
+        function register(event){
+          event.preventDefault();
+          const name =event.target.name.value;
+          const mail =event.target.email.value;
+          const phone =event.target.phone.value;
+          const time =event.target.time.value;
+           
+          const user={
+            name,
+            mail,
+            phone,
+            time
+          }
+          let obj_serialized = JSON.stringify(user);
+          localStorage.setItem(user.name, obj_serialized);   
+          dispData(user);
+
+        }
+        
+        function dispData(user){
+          const parnt = document.getElementById('users');
+          const child = document.createElement('li');
+          child.textContent = user.name+'-'+user.mail+'-'+user.phone+'-'+user.time;
+         
+          const dltBtn = document.createElement('input');
+          dltBtn.type = 'button';
+          dltBtn.value = 'remove';
+          dltBtn.onclick = () =>
+          {
+            localStorage.removeItem(user.name);
+            parnt.removeChild(child);
+          }
+
+          const edtBtn = document.createElement('input');
+          edtBtn.type = 'button';
+          edtBtn.value = 'edit';
+
+          edtBtn.onclick = () =>
+          {
+            document.getElementById('name').value = user.name;
+            document.getElementById('email').value = user.mail;
+            document.getElementById('phone').value = user.phone;
+           localStorage.removeItem(user.name);
+            parnt.removeChild(child);
+          }
+
+          parnt.appendChild(child);
+          child.appendChild(dltBtn);
+          child.appendChild(edtBtn);
+        }
+       
+
+      </script>
+    
+</body>
+</html>
