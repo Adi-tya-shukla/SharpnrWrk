@@ -169,8 +169,15 @@
           dltBtn.value = 'remove';
           dltBtn.onclick = () =>
           {
-            localStorage.removeItem(user.name);
-            parnt.removeChild(child);
+            axios.delete(`https://crudcrud.com/api/ef19e18a3f65446dacfcbd3dd015e127/appointmentData/${user._id}`)
+            .then((response) =>{
+              parnt.removeChild(child);
+            }).catch((err) => {
+            alert("Something went wrong");
+            console.log(err)
+          })
+            // localStorage.removeItem(user._id);
+          
           }
 
           const edtBtn = document.createElement('input');
@@ -179,11 +186,18 @@
 
           edtBtn.onclick = () =>
           {
+
             document.getElementById('name').value = user.name;
             document.getElementById('email').value = user.mail;
             document.getElementById('phone').value = user.phone;
-           localStorage.removeItem(user.name);
-            parnt.removeChild(child);
+           axios.delete(`https://crudcrud.com/api/ef19e18a3f65446dacfcbd3dd015e127/appointmentData/${user._id}`)
+            .then((response) =>{
+              parnt.removeChild(child);
+            }).catch((err) => {
+            alert("Something went wrong");
+            console.log(err)
+          })
+           
           }
 
           parnt.appendChild(child);
