@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProductDetails</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" 
+    integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js" 
+    integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N" crossorigin="anonymous"></script>
+    <style>
+        form
+        {
+            border: 30px solid rgba(240, 243, 150, 0.759);
+        }
+        body{
+            background: #ccdda5;
+        }
+        #Inputs{
+            background-color: rgb(156, 248, 217);
+            padding: 1px 1px 1px ;
+        }
+        #list
+        {
+           margin-top: 200px;
+           margin-right: 30px;
+        text-align: left;
+        border : 1px solid black;
+        }
+
+    
+    </style>
+</head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 mx-auto">
+                    <h1>ProductDetails</h1>
+                    <form onsubmit="addExpense(event)">
+                        <div id="Inputs"><input type="hidden" id="editIndex">
+                       
+                        <div class="form-group">
+                            <label for="Item-name">Item Name:</label>
+                            <input type="text" id="ItemName"  name="ItemName"class="form-control" required>
+                        </div>
+                       
+                        <div class="form-group">
+                            <label for="amount">Amount:</label>
+                            <input type="number" placeholder="In rupees Only" id="amount"   name="amount" class="form-control" required>
+                        </div>
+                        <button type="submit" id="addButton" class="btn btn-primary">Add Expense</button>
+                    </div>
+                   
+                    <div id="list">
+                        <ul id="details">
+                      </ul>
+                      </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.6/axios.min.js"></script>
+        <script>
+            function addExpense() {
+                event.preventDefault();
+                const ItemName = event.target.ItemName.value;
+                const amount = event.target.amount.value;
+
+            const details=
+            {
+                ItemName,
+                amount
+            }
+            axios.post("https://crudcrud.com/api/0618404157b445edbd850fb0459e494b/ProductDetails", details)
+          .then((response) =>{
+            showExpenses(response.data);
+          console.log(response)})
+          .catch((err) => {
+            alert("Something went wrong");
+            console.log(err)
+          })
+        }
+
+        window.addEventListener("DOMContentLoaded" , () =>{
+          axios.get("https://crudcrud.com/api/0618404157b445edbd850fb0459e494b/ProductDetails")
+          .then((response) =>{
+          console.log(response)
+
+          for(var  i = 0 ; i < response.data.length;i++)
+          {
+            showExpenses(response.data[i]);
+
+          }
+        }).catch((err) => {
+            alert("Something went wrong");
+            console.log(err)
+          })
+
+        })
+        
+        function showExpenses(details){
+          const parnt = document.getElementById('details');
+          const child = document.createElement('li');
+          child.textContent = details.ItemName+'-'+details.amount;
+         
+          const dltBtn = document.createElement('input');
+          dltBtn.type = 'button';
+          dltBtn.value = 'remove';
+          dltBtn.onclick = () =>
+          {
+            axios.delete(`https://crudcrud.com/api/0618404157b445edbd850fb0459e494b/ProductDetails/${user._id}`)
+            .then((response) =>{
+              parnt.removeChild(child);
+            }).catch((err) => {
+            alert("Something went wrong");
+            console.log(err)
+          })
+          
+          }
+
+          const edtBtn = document.createElement('input');
+          edtBtn.type = 'button';
+          edtBtn.value = 'edit';
+
+          edtBtn.onclick = () =>
+          {
+
+            document.getElementById('ItemName').value = details.ItemName;
+            document.getElementById('amount').value = details.amount;
+            document.getElementById('addButton').innerHTML = 'Update Expense';
+           axios.delete(`https://crudcrud.com/api/0618404157b445edbd850fb0459e494b/ProductDetails/${user._id}`)
+            .then((response) =>{
+              parnt.removeChild(child);
+            }).catch((err) => {
+            alert("Something went wrong");
+            console.log(err)
+          })
+           
+          }
+
+          parnt.appendChild(child);
+          child.appendChild(dltBtn);
+          child.appendChild(edtBtn);
+        }
+        
+  </script>
+</body>
+</html>
